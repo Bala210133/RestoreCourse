@@ -9,6 +9,8 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './App/routes/Routes.tsx';
 import { Provider } from 'react-redux';
 import { store } from './App/store/store.ts';
+import { ToastContainer } from 'react-toastify/unstyled';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -16,7 +18,9 @@ import { store } from './App/store/store.ts';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Provider store={store}> <RouterProvider router={router} />
+    <Provider store={store}>
+      <ToastContainer position="bottom-right" hideProgressBar theme='colored' aria-label={undefined}  /> 
+       <RouterProvider router={router} />
     </Provider>
    
   </StrictMode>,
