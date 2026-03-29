@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+
 import { useParams } from "react-router-dom"
-import type { product } from "../../App/models/product";
 import { Button, Divider, Grid, Table, TableBody, TableContainer, TableRow, TextField, Typography,TableCell } from "@mui/material";
+import { useFetchProductDetailsQuery } from "./catalogAPI";
 
 
 
@@ -9,16 +9,11 @@ import { Button, Divider, Grid, Table, TableBody, TableContainer, TableRow, Text
 
 export default function ProductDetails() {
   const {id} = useParams<{id:string }>();
-  const [product, setProduct] = useState<product | null>(null);
 
-  useEffect(() => {
-    fetch(`https://localhost:7197/API/products/${id}`)
-    .then(response => response.json())
-    .then(data => setProduct(data))
-    .catch(error => console.log(error))
-  }, [id])
+  const{data: product, isLoading} = useFetchProductDetailsQuery(id? +id :0);
 
-  if (!product) return <div>Loading...</div>
+
+  if (!product || isLoading) return <div>Loading...</div>
 
   const productDetails = [
     {label:'Name', value: product.name},
@@ -68,7 +63,7 @@ export default function ProductDetails() {
           <Button 
           sx={{height: '55px'}}
             color="primary"
-            size="Large"
+            size="large"
             variant="contained"
             fullWidth
           > 
