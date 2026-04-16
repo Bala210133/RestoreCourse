@@ -3,6 +3,8 @@ import { product } from './Product';
 export type Basket = {
     basketId: string
     items: Item[]
+    clientSecret?: string
+    paymentIntentId?: string
 };
 
 export class Item  {

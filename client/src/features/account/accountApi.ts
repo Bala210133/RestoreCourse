@@ -1,6 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQueryWithErrorHandling } from "../../App/api/baseApi";
-import type { User } from "../../App/models/user";
+import type { Address, User } from "../../App/models/user";
 import type { LoginSchema } from "../../lib/schemas/loginSchema";
 import { router } from "../../App/routes/Routes";
 import { toast } from "react-toastify/unstyled";
@@ -59,8 +59,38 @@ export const accountApi = createApi({
           dispatch(accountApi.util.invalidateTags(['UserInfo']));
           router.navigate('/')
         }
+      }),
+
+      fetchAddress: builder.query<Address, void>({
+        query: () =>({
+          url: 'account/address',
+        }) 
+
+      }),
+      updateUserAddress: builder.mutation<void, Address>({
+        query: (address) => ({
+          url: 'account/address',
+          method: 'POST',
+          body: address
+        }),
+        onQueryStarted: async (address, { dispatch, queryFulfilled }) => {
+          const patchResult = dispatch(
+            accountApi.util.updateQueryData('fetchAddress', undefined, (draft) => {
+              Object.assign(draft, {...address});
+            })
+          );
+
+          try{
+            await queryFulfilled;
+
+          }catch (error){
+            patchResult.undo();
+            console.log(error);
+
+          }
+        }
       })
   })
 });
 
-export const { useLoginMutation, useRegisterMutation,  useLogoutMutation , useUserInfoQuery, useLazyUserInfoQuery} = accountApi;
+export const { useLoginMutation, useRegisterMutation,  useLogoutMutation , useUserInfoQuery, useLazyUserInfoQuery, useFetchAddressQuery, useUpdateUserAddressMutation } = accountApi;
