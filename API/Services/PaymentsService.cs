@@ -1,4 +1,3 @@
-
 using API.Entities;
 using Stripe;
 
@@ -6,29 +5,25 @@ namespace API.Services;
 
 public class PaymentsService(IConfiguration config)
 {
-    public async Task<PaymentIntent>CreateOrUpdatePaymentIntent(Basket basket)
-
-{
-    StripeConfiguration.ApiKey = config["StripeSettings:SecretKey"];
-
-    var service = new PaymentIntentService();
-    var intent = new PaymentIntent();
-    var subtotal = basket.Items.Sum(x => x.Quantity * x.Product.Price);
-
-    var deliveryFee = subtotal > 10000 ? 0: 500;
-
-    if (string.IsNullOrEmpty(basket.PaymentIntentId))
+    public async Task<PaymentIntent> CreateOrUpdatePaymentIntent(Basket basket)
     {
-        var options = new PaymentIntentCreateOptions
+        StripeConfiguration.ApiKey = config["StripeSettings:SecretKey"];
+
+        var service = new PaymentIntentService();
+        var intent = new PaymentIntent();
+        var subtotal = basket.Items.Sum(x => x.Quantity * x.Product.Price);
+        var deliveryFee = subtotal > 10000 ? 0 : 500;
+
+        if (string.IsNullOrEmpty(basket.PaymentIntentId))
         {
-            Amount = subtotal + deliveryFee,
-            Currency = "usd",
-            PaymentMethodTypes = ["card"]
-        };
-        intent = await service.CreateAsync(options);
-
-
-}
+            var options = new PaymentIntentCreateOptions
+            {
+                Amount = subtotal + deliveryFee,
+                Currency = "usd",
+                PaymentMethodTypes = ["card"]
+            };
+            intent = await service.CreateAsync(options);
+        }
         else
         {
             var options = new PaymentIntentUpdateOptions
@@ -39,5 +34,12 @@ public class PaymentsService(IConfiguration config)
         }
 
         return intent;
-}
+    }
+
+    public async Task<PaymentIntent> GetPaymentIntent(string paymentIntentId)
+    {
+        StripeConfiguration.ApiKey = config["StripeSettings:SecretKey"];
+        var service = new PaymentIntentService();
+        return await service.GetAsync(paymentIntentId);
+    }
 }

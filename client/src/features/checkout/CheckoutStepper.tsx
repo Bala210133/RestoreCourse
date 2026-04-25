@@ -10,12 +10,15 @@ import { useBasket } from "../../lib/hooks/useBakset";
 import { currencyFormat } from "../../lib/util";
 import { toast } from "react-toastify/unstyled";
 import { LoadingButton } from "@mui/lab";
+import { useCreateOrderMutation } from "../orders/orderApi";
+
 
 const steps = ['Address', 'Payment', 'Review'];
 
 export default function CheckoutStepper() {
 
     const [activestep, setActiveStep] = useState(0);
+    const [createOrder] = useCreateOrderMutation();
     const { basket } = useBasket();
     const { data: { name, ...restAddress } = {} as Address, isLoading } = useFetchAddressQuery();
     const [updateAddress] = useUpdateUserAddressMutation();
@@ -24,7 +27,7 @@ export default function CheckoutStepper() {
     const stripe = useStripe();
     const [addressComplete, setAddressComplete] = useState(false);
     const [paymentComplete, setPaymentComplete] = useState(false);
-    const { total,clearBasket } = useBasket();
+    const { total, clearBasket } = useBasket();
     const navigate = useNavigate();
     const [confirmationToken, setConfirmationToken] = useState<ConfirmationToken | null>(null);
     const [submitting, setSubmitting] = useState(false);
@@ -42,13 +45,17 @@ export default function CheckoutStepper() {
                 }
             });
 
-            if (paymentResult?.paymentIntent?.status === 'succeeded') {
-                navigate('/checkout/success');
-                clearBasket();
-            } else if (paymentResult?.error) {
+            if (paymentResult?.error) {
                 throw new Error(paymentResult.error.message);
+            }
+
+            if (paymentResult?.paymentIntent?.status === 'succeeded') {
+                const orderModel = await createOrderModel();
+                const orderResult = await createOrder(orderModel);
+                navigate('/checkout/success', { state: orderResult });
+                clearBasket();
             } else {
-                throw new Error('something went wrong');
+                throw new Error('Something went wrong');
             }
         }
         catch (error) {
@@ -60,6 +67,14 @@ export default function CheckoutStepper() {
             setSubmitting(false);
         }
     };
+
+    const createOrderModel = async () => {
+        const shippingAddress = await getStripeAddress();
+        const paymentSummary = confirmationToken?.payment_method_preview.card;
+
+        if (!shippingAddress || !paymentSummary) throw new Error("Problem creating order");
+        return { shippingAddress, paymentSummary }
+    }
 
     const getStripeAddress = async () => {
         const addressElement = elements?.getElement('address');
@@ -93,8 +108,6 @@ export default function CheckoutStepper() {
         }
 
         if (activestep < 2) setActiveStep(step => step + 1);
-
-        
     }
 
     const handleBack = () => {
@@ -149,12 +162,12 @@ export default function CheckoutStepper() {
             <Box sx={{ mt: 2 }}>
                 <Box sx={{ display: activestep === 1 ? 'block' : 'none' }}>
                     <PaymentElement onChange={handlePaymentChange}
-                    options={{
-                        wallets:{
-                            applePay: 'never',
-                            googlePay: 'never',
-                        }
-                    }} />
+                        options={{
+                            wallets: {
+                                applePay: 'never',
+                                googlePay: 'never',
+                            }
+                        }} />
                 </Box>
             </Box>
 
@@ -168,7 +181,6 @@ export default function CheckoutStepper() {
                 <Button onClick={handleBack}>Back</Button>
                 <LoadingButton
                     onClick={handleNext}
-                    
                     disabled={
                         (activestep === 0 && !addressComplete) ||
                         (activestep === 1 && (!paymentComplete || submitting))
