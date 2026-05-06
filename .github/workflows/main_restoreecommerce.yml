@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -21,7 +21,7 @@ jobs:
       - name: Set up node.js
         uses: actions/setup-node@v3
         with:
-        node-version: '20'
+          node-version: '20'   # ✅ fixed indentation
 
       - name: Install deps and build client app
         run: |
@@ -50,8 +50,8 @@ jobs:
     runs-on: windows-latest
     needs: build
     permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
+      id-token: write
+      contents: read
 
     steps:
       - name: Download artifact from build job
@@ -73,4 +73,3 @@ jobs:
           app-name: 'RestoreEcommerce'
           slot-name: 'Production'
           package: .
-          
