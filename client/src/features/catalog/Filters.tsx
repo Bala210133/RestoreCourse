@@ -21,7 +21,7 @@ type Props = {
 }
 
 export default function Filters({ filtersData: data }: Props) {
-    const { orderBy, types, brands } = useAppSelector(state => state.catalog);
+    const { orderby, types, brands } = useAppSelector(state => state.catalog);
     const dispatch = useAppDispatch();
     const [resetKey, setResetKey] = useState(0);
 
@@ -38,7 +38,7 @@ export default function Filters({ filtersData: data }: Props) {
             <Paper sx={{ p: 3 }}>
                 <RadioButtonGroup
                     options={sortOptions}
-                    selectedValue={orderBy}
+                    selectedValue={orderby}
                     onChange={e => dispatch(setOrderby(e.target.value))}
                 />
             </Paper>

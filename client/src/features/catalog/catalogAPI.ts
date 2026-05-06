@@ -1,7 +1,7 @@
 import { createApi,  } from "@reduxjs/toolkit/query/react";
-import type { product } from "../../App/models/product";
+import type { product } from "../../App/models/Product";
 import { baseQueryWithErrorHandling } from "../../App/api/baseApi";
-import { ProductParams } from "../../App/models/productParams";
+import type { ProductParams } from "../../App/models/productParams";
 import { filterEmptyValue } from "../../lib/util";
 import type { Pagination } from "../../App/models/pagination";
 

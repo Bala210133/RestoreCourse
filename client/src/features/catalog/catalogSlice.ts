@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ProductParams } from "../../app/models/productParams";
+import type { ProductParams } from "../../App/models/productParams";
+
 
 const initialState: ProductParams = {
     pageNumber:1,
@@ -27,13 +28,13 @@ export const catalogSlice = createSlice({
         },
 
          setTypes(state, action) {
-            state.Types = action.payload;
+            state.types = action.payload;
             state.pageNumber = 1;
 
         },
 
          setBrands(state, action) {
-            state.Brands = action.payload;
+            state.brands = action.payload;
             state.pageNumber = 1;
 
         },
