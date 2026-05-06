@@ -27,7 +27,7 @@ public static class OrderExntensions
                 Name = item.ItemOrdered.Name,
                 PictureUrl  = item.ItemOrdered.PictureUrl,
                 Price= item.Price,
-                Qunatity=item.Quantity,
+                Quantity=item.Quantity,
             }).ToList()
         }).AsNoTracking();
     }
@@ -51,7 +51,7 @@ public static class OrderExntensions
                 Name = item.ItemOrdered.Name,
                 PictureUrl  = item.ItemOrdered.PictureUrl,
                 Price= item.Price,
-                Qunatity=item.Quantity,
+                Quantity=item.Quantity,
             }).ToList()
         };
     }

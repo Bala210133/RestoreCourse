@@ -1,4 +1,4 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
+import {  createApi } from "@reduxjs/toolkit/query/react";
 import { baseQueryWithErrorHandling } from "../../App/api/baseApi";
 import type { Order, CreateOrder } from "../../App/models/order";
 
@@ -22,7 +22,10 @@ export const orderApi = createApi({
                 method: 'POST',
                 body: order
             }),
-            invalidatesTags: ['Orders']
+            onQueryStarted:async (_,{dispatch,queryFulfilled}) => {
+                await queryFulfilled;
+            dispatch(orderApi.util.invalidateTags(['Orders']))
+        }
         })
     })
 })
