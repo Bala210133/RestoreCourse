@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQueryWithErrorHandling } from "../../App/api/baseApi";
 import { Item, type Basket } from "../../App/models/Basket";
-import type { Product } from "../../App/models/Product";
+import type { Product } from "../../App/models/product";
 import Cookies from "js-cookie";
 function isBasketItem(product: Product | Item): product is Item 
 {

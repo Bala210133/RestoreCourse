@@ -1,5 +1,5 @@
 import { createApi,  } from "@reduxjs/toolkit/query/react";
-import type { product } from "../../App/models/Product";
+import { Product } from '../../App/models/product' 
 import { baseQueryWithErrorHandling } from "../../App/api/baseApi";
 import type { ProductParams } from "../../App/models/productParams";
 import { filterEmptyValue } from "../../lib/util";

@@ -1,4 +1,4 @@
-import type { product } from './Product';
+import type { product } from './product';
 export type Basket = {
     basketId: string
     items: Item[]
