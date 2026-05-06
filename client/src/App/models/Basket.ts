@@ -1,4 +1,4 @@
-import type { product } from './product';
+import type { Product } from './product'
 export type Basket = {
     basketId: string
     items: Item[]
@@ -7,7 +7,7 @@ export type Basket = {
 };
 
 export class Item  {
-    constructor(product: product, quantity: number) {
+    constructor(product: Product, quantity: number) {
         this.productId = product.id;
         this.name = product.name;
         this.price = product.price;

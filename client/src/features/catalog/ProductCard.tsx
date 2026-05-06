@@ -1,11 +1,11 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Typography } from "@mui/material"
-import type { product } from "../../App/models/product"
+import type { Product } from '../../App/models/product'  
 import { Link } from "react-router-dom"
 import { useAddBasketItemMutation } from "../basket/basketApi"
 import { currencyFormat } from "../../lib/util"
 
 type props = {
-    product:product
+    product:Product
 }
 
 export default function ProductCard({product}:props) {
