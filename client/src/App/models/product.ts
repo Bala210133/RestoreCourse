@@ -9,4 +9,3 @@ export type Product =  {
     quantityInStock: number
 }
 
-export type product = Product;
