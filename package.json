@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@hookform/resolvers": "^5.2.2",
+    "@hookform/resolvers": "^3.10.0",
     "@reduxjs/toolkit": "^2.11.2",
     "@stripe/react-stripe-js": "^6.1.0",
     "@stripe/stripe-js": "^9.2.0",
@@ -10,6 +10,6 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.13.1",
     "react-toastify": "^11.0.5",
-    "zod": "^4.3.6"
+    "zod": "^3.25.76"
   }
 }
