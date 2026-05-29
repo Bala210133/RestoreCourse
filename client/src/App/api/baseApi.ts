@@ -8,6 +8,8 @@ const customBaseQuery = fetchBaseQuery({
     credentials: 'include',
 });
 
+
+
 type ErrorResponse = | string | { title: string } | {errors: string[]};
 const sleep = () => new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -38,6 +40,12 @@ export const baseQueryWithErrorHandling = async (args: string | FetchArgs, api:B
             case 401:
                 if(typeof responseData === 'object' && 'title' in responseData) 
                     toast.error(responseData.title);
+                
+                break;
+
+                case 403:
+                if(typeof responseData === 'object' ) 
+                    toast.error('403 Forbidden');
                 
                 break;
 
