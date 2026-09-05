@@ -13,6 +13,12 @@ jobs:
           cd /home/Bala/ECommerce/RestoreCourse
           git pull origin main
 
+      - name: Debug environment
+        run: |
+          echo "PATH is: $PATH"
+          echo "Trying direct docker path:"
+          "/mnt/c/Program Files/Docker/Docker/resources/bin/docker" ps || echo "DIRECT CALL FAILED"
+
       - name: Run deploy script
         run: |
           chmod +x /home/Bala/deploy.sh
