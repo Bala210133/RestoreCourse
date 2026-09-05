@@ -15,6 +15,5 @@ jobs:
 
       - name: Run deploy script
         run: |
-          cd /home/Bala/ECommerce/RestoreCourse
-          chmod +x deploy.sh
-          ./deploy.sh
+          chmod +x /home/Bala/deploy.sh
+          /home/Bala/deploy.sh
